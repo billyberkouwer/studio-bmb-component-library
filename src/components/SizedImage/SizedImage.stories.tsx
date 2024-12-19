@@ -1,17 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import SizedImage from "./SizedImage";
-
-import { createClient } from "@sanity/client";
-// Import using ESM URL imports in environments that supports it:
-// import {createClient} from 'https://esm.sh/@sanity/client'
-
-const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: "production",
-  useCdn: true, // set to `false` to bypass the edge cache
-  apiVersion: "2023-05-03", // use current date (YYYY-MM-DD) to target the latest API version
-  // token: process.env.SANITY_SECRET_TOKEN // Needed for certain operations like updating content or accessing previewDrafts perspective
-});
+import { client } from "@/sanity/lib/client";
+import fileSvg from "../../../public/file.svg"
 
 const documentData = await client.fetch(`
         *[_type == "testDocument"][] {
@@ -33,9 +23,23 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    src: fileSvg,
     alt: "",
-    width: 300,
+    style: {objectFit: "cover"},
+    sanityImageAsset: undefined,
+    width: 200,
     height: 200,
-    src: image.url
+  },
+};
+
+export const SanityImage: Story = {
+  args: {
+    src: undefined,
+    alt: "",
+    sanityImageAsset: image,
+    style: {},
+    width: 500,
+    resolution: "s",
+    autoSize: true,
   },
 };

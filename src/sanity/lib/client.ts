@@ -1,59 +1,9 @@
-
-import { draftMode } from "next/headers";
-import { createClient, type QueryOptions, type QueryParams } from "next-sanity";
-import { token } from "./token";
-
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
-const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2023-05-03";
+import { createClient } from "next-sanity";
 
 export const client = createClient({
-  projectId,
-  dataset,
-  apiVersion,
-  useCdn: false,
-  stega: {
-    enabled: process.env.NEXT_PUBLIC_VERCEL_ENV === "preview",
-    studioUrl: "/admin",
-  },
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: "production",
+  useCdn: true, // set to `false` to bypass the edge cache
+  apiVersion: "2023-05-03", // use current date (YYYY-MM-DD) to target the latest API version
+  // token: process.env.SANITY_SECRET_TOKEN // Needed for certain operations like updating content or accessing previewDrafts perspective
 });
-
-export async function sanityFetch<QueryResponse>({
-  query,
-  params = {},
-  revalidate = 60,
-  tags = [],
-}: {
-  query: string;
-  params?: QueryParams;
-  revalidate?: number | false;
-  tags?: string[];
-}) {
-  const getDraftMode = await draftMode();
-  const isDraftMode = getDraftMode.isEnabled;
-  if (isDraftMode && !token) {
-    throw new Error("Missing environment variable SANITY_API_READ_TOKEN");
-  }
-
-  let dynamicRevalidate = revalidate;
-  if (isDraftMode) {
-    // Do not cache in Draft Mode
-    dynamicRevalidate = 0;
-  } else if (tags.length) {
-    // Cache indefinitely if tags supplied, purge with revalidateTag()
-    dynamicRevalidate = false;
-  }
-
-  return client.fetch<QueryResponse>(query, params, {
-    ...(isDraftMode &&
-      ({
-        token: token,
-        perspective: "previewDrafts",
-        stega: true,
-      } satisfies QueryOptions)),
-    next: {
-      revalidate: dynamicRevalidate,
-      tags,
-    },
-  });
-}
