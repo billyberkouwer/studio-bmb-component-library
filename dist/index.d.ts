@@ -1,12 +1,26 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
-import { ImageProps } from 'next/image';
-import React, { HTMLAttributes, ReactNode } from 'react';
+import { SanityImageAssetDocument } from 'next-sanity';
+import React, { CSSProperties, ReactNode, HTMLAttributes } from 'react';
 import { LinkProps } from 'next/link';
 
-interface SizedImage extends ImageProps {
-    notNextImage?: HTMLAttributes<HTMLImageElement>;
+interface SizedImage {
+    src?: string;
+    alt?: string;
+    resolution?: "xs" | "s" | "m" | "l" | "max";
+    sizes?: string;
+    autoSize?: boolean;
+    objectFit?: "cover" | "contain";
+    style?: Partial<CSSProperties>;
+    className?: string;
+    id?: string;
+    priority?: boolean;
+    notNextImage?: boolean;
+    sanityImageAsset?: SanityImageAssetDocument;
+    aspectRatio?: number;
+    width?: number;
+    height?: number;
 }
-declare function SizedImage({ notNextImage, ...props }: SizedImage): react_jsx_runtime.JSX.Element;
+declare function SizedImage({ src, alt, style, objectFit, className, id, resolution, sizes, autoSize, priority, notNextImage, sanityImageAsset, width, height, }: SizedImage): react_jsx_runtime.JSX.Element;
 
 declare const TextBox: ({ children }: {
     children: ReactNode | ReactNode[];

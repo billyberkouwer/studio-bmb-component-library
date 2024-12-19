@@ -1,11 +1,12 @@
 import { SanityImageAssetDocument } from "next-sanity";
-import Image from "next/image";
-import React, { CSSProperties } from "react";
+import NextImage from "next/image";
+import React, { CSSProperties, useEffect, useState } from "react";
 
 export interface SizedImage {
-  src: string | undefined;
-  alt: string | undefined;
+  src?: string;
+  alt?: string;
   resolution?: "xs" | "s" | "m" | "l" | "max";
+  fill?: boolean;
   sizes?: string;
   autoSize?: boolean;
   objectFit?: "cover" | "contain";
@@ -86,6 +87,7 @@ export default function SizedImage({
   alt,
   style,
   objectFit = "cover",
+  fill,
   className,
   id,
   resolution,
@@ -97,25 +99,55 @@ export default function SizedImage({
   width,
   height,
 }: SizedImage) {
+  const [intrinsicImgSize, setIntrinsicImgSize] = useState({
+    x: 0,
+    y: 0,
+    aspectRatio: 1,
+  });
+
+  useEffect(() => {
+    if (!sanityImageAsset && src) {
+      const img = new Image();
+      img.onload = function () {
+        setIntrinsicImgSize({
+          x: img.width,
+          y: img.height,
+          aspectRatio: img.width / img.height,
+        });
+        console.log("Intrinsic size: " + img.width + "x" + img.height);
+      };
+      img.src = src;
+    }
+  }, [src, sanityImageAsset]);
+
   if (sanityImageAsset) {
     return (
-      <Image
+      <NextImage
         className={`bmb-image ${className}`}
         id={id ? id : undefined}
         src={src ? src : sanityImageAsset.url}
         alt={alt ? alt : sanityImageAsset.alt}
-        width={setWidth(
-          width,
-          height,
-          sanityImageAsset.metadata.dimensions.aspectRatio,
-          sanityImageAsset.metadata.dimensions.width
-        )}
-        height={setHeight(
-          height,
-          width,
-          sanityImageAsset.metadata.dimensions.aspectRatio,
-          sanityImageAsset.metadata.dimensions.height
-        )}
+        fill={fill}
+        width={
+          !fill
+            ? setWidth(
+                width,
+                height,
+                sanityImageAsset.metadata.dimensions.aspectRatio,
+                sanityImageAsset.metadata.dimensions.width
+              )
+            : undefined
+        }
+        height={
+          !fill
+            ? setHeight(
+                height,
+                width,
+                sanityImageAsset.metadata.dimensions.aspectRatio,
+                sanityImageAsset.metadata.dimensions.height
+              )
+            : undefined
+        }
         style={
           style
             ? { objectFit: objectFit ? objectFit : undefined, ...style }
@@ -141,26 +173,59 @@ export default function SizedImage({
             ? { objectFit: objectFit ? objectFit : undefined, ...style }
             : undefined
         }
-        width={width ? width : undefined}
-        height={height ? height : undefined}
+        width={
+          !fill
+            ? width
+              ? width
+              : height
+                ? height * intrinsicImgSize.aspectRatio
+                : 500
+            : undefined
+        }
+        height={
+          !fill
+            ? height
+              ? height
+              : width
+                ? width / intrinsicImgSize.aspectRatio
+                : 500
+            : undefined
+        }
         loading={priority ? "eager" : "lazy"}
       />
     );
   }
 
   return (
-    <Image
+    <NextImage
       className={`bmb-image ${className}`}
       id={id ? id : undefined}
       src={src ? src : ""}
       alt={alt ? alt : ""}
-      width={width ? width : 500}
-      height={height ? height : 500}
+      width={
+        !fill
+          ? width
+            ? width
+            : height
+              ? height * intrinsicImgSize.aspectRatio
+              : 500
+          : undefined
+      }
+      height={
+        !fill
+          ? height
+            ? height
+            : width
+              ? width / intrinsicImgSize.aspectRatio
+              : 500
+          : undefined
+      }
       style={
         style
           ? { objectFit: objectFit ? objectFit : undefined, ...style }
           : undefined
       }
+      fill={fill}
       priority={priority}
       sizes={sizes ? sizes : getNextImageSizes(resolution, autoSize)}
     />

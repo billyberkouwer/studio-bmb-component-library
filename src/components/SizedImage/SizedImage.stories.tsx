@@ -25,10 +25,9 @@ export const Default: Story = {
   args: {
     src: fileSvg,
     alt: "",
-    style: {objectFit: "cover"},
     sanityImageAsset: undefined,
     width: 200,
-    height: 200,
+    fill: true
   },
 };
 

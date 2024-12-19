@@ -32,8 +32,8 @@ export default [
       resolve(),
       commonjs(),
       typescript({
-        tsconfig: "./tsconfig.build.json",        
-        exclude: ["**/*.test.tsx", "**/*.test.ts", "**/*.stories.ts", "src/app/**", "next.config.ts"],
+        tsconfig: "./tsconfig.build.json",
+        exclude: ["**/*.test.tsx", "**/*.test.ts", "**/*.stories.ts", "src/app/**", "next.config.ts", "sanity.cli.ts", "sanity.config.ts"],
       }),
       babel({ presets: ['@babel/preset-react'] }),
       preserveDirectives(),
