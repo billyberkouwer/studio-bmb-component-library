@@ -51,10 +51,16 @@
   "dependencies": {
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-terser": "^0.4.4",
+    "@sanity/image-url": "^1.1.0",
+    "@sanity/vision": "^3.68.1",
     "next": "^15.1.0",
+    "next-sanity": "^9.8.28",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "rollup-plugin-import-css": "^3.5.8"
+    "rollup-plugin-import-css": "^3.5.8",
+    "sanity": "^3.68.1",
+    "styled-components": "^6.1.13",
+    "react-player": "^2.16.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.6",

@@ -7,7 +7,7 @@ export default function Home() {
       <main className={styles.main}>
         <Image
           className={styles.logo}
-          src="/next.svg"
+          src="https://cdn.sanity.io/images/xdj4ag3i/production/7700f9dc5c69f45fe20d675be45ecc82741140ac-3840x2560.webp"
           alt="Next.js logo"
           width={180}
           height={38}
