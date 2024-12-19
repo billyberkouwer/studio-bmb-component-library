@@ -1,0 +1,16 @@
+.bmb-button {
+    background-color: var(--dark);
+    color: var(--light);
+    border: none;
+    border-radius: 0.2rem;
+    cursor: pointer;
+}
+
+.bmb-button--medium {
+    padding: 0.2rem 0.4rem;
+    font-size: 1rem;
+}
+
+.bmb-button--link {
+    text-decoration: none;
+}

@@ -1,0 +1,2 @@
+import{jsx as t}from"react/jsx-runtime";import b from"next/link";const n=({children:n="Button",size:m="medium",link:e,externalLink:o,...i})=>o?t("a",{...i,...o,className:`bmb-button bmb-button--${m} bmb-button--link`,children:n}):e?t(b,{...i,...e,className:`bmb-button bmb-button--${m} bmb-button--link`,children:n}):t("button",{...i,className:`bmb-button bmb-button--${m}`,children:n});export{n as default};
+//# sourceMappingURL=Button.js.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"SizedImage.js","sources":["../../../../src/components/SizedImage/SizedImage.tsx"],"sourcesContent":[null],"names":["SizedImage","notNextImage","props","_jsx","Image","className"],"mappings":"kEAMc,SAAUA,GAAWC,aAAEA,KAAiBC,IACpD,OAAID,EACKE,EAAA,MAAA,IAASF,IAGXE,EAACC,EAAM,CAAAC,UAAU,eAAgBH,GAC1C"}
