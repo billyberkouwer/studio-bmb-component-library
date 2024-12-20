@@ -1,3 +1,14 @@
+.bmb-plain-image {
+    opacity: 0;
+    transition: opacity 1s;
+
+    &.--visible {
+        opacity: 1;
+    }
+}
+
+
+
 :root {
     --dark: #161616;
     --light: #f1f1f1;

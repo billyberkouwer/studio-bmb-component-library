@@ -1,13 +1,13 @@
 import Link, { LinkProps } from "next/link";
 import "../global.css";
 import "./button.css";
-import React, { HTMLAttributes } from "react";
+import React, { AnchorHTMLAttributes, HTMLAttributes } from "react";
 
 export interface Button extends HTMLAttributes<HTMLElement> {
   children?: React.ReactNode | React.ReactNode[];
   size?: "small" | "medium" | "large";
   link?: LinkProps | null | undefined;
-  externalLink?: HTMLAttributes<HTMLAnchorElement> | null | undefined;
+  externalLink?: AnchorHTMLAttributes<HTMLAnchorElement> | null | undefined;
 }
 
 const Button = ({

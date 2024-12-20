@@ -1,6 +1,8 @@
 import { SanityImageAssetDocument } from "next-sanity";
 import NextImage from "next/image";
-import React, { CSSProperties, useEffect, useState } from "react";
+import React, { CSSProperties} from "react";
+import SizedPlainImage from "./SizedPlainImage";
+import "./sized-image.css";
 
 export interface SizedImage {
   src?: string;
@@ -8,7 +10,7 @@ export interface SizedImage {
   resolution?: "xs" | "s" | "m" | "l" | "max";
   fill?: boolean;
   sizes?: string;
-  autoSize?: boolean;
+  autoResolution?: boolean;
   objectFit?: "cover" | "contain";
   style?: Partial<CSSProperties>;
   className?: string;
@@ -23,9 +25,9 @@ export interface SizedImage {
 
 export function getNextImageSizes(
   size?: "xs" | "s" | "m" | "l" | "max",
-  autoSize?: boolean
+  autoResolution?: boolean
 ): string | undefined {
-  if (autoSize) {
+  if (autoResolution) {
     return undefined;
   }
   if (size === "xs") {
@@ -46,7 +48,7 @@ export function getNextImageSizes(
   return "(max-width: 768px) 70vw, (max-width: 1200px) 50vw, 33vw";
 }
 
-function setWidth(
+function getWidth(
   width: number | undefined,
   height: number | undefined,
   aspectRatio: number | undefined,
@@ -64,7 +66,7 @@ function setWidth(
   return 200;
 }
 
-function setHeight(
+function getHeight(
   height: number | undefined,
   width: number | undefined,
   aspectRatio: number | undefined,
@@ -92,34 +94,13 @@ export default function SizedImage({
   id,
   resolution,
   sizes,
-  autoSize,
+  autoResolution,
   priority,
   notNextImage,
   sanityImageAsset,
   width,
   height,
 }: SizedImage) {
-  const [intrinsicImgSize, setIntrinsicImgSize] = useState({
-    x: 0,
-    y: 0,
-    aspectRatio: 1,
-  });
-
-  useEffect(() => {
-    if (!sanityImageAsset && src) {
-      const img = new Image();
-      img.onload = function () {
-        setIntrinsicImgSize({
-          x: img.width,
-          y: img.height,
-          aspectRatio: img.width / img.height,
-        });
-        console.log("Intrinsic size: " + img.width + "x" + img.height);
-      };
-      img.src = src;
-    }
-  }, [src, sanityImageAsset]);
-
   if (sanityImageAsset) {
     return (
       <NextImage
@@ -130,7 +111,7 @@ export default function SizedImage({
         fill={fill}
         width={
           !fill
-            ? setWidth(
+            ? getWidth(
                 width,
                 height,
                 sanityImageAsset.metadata.dimensions.aspectRatio,
@@ -140,7 +121,7 @@ export default function SizedImage({
         }
         height={
           !fill
-            ? setHeight(
+            ? getHeight(
                 height,
                 width,
                 sanityImageAsset.metadata.dimensions.aspectRatio,
@@ -153,7 +134,7 @@ export default function SizedImage({
             ? { objectFit: objectFit ? objectFit : undefined, ...style }
             : undefined
         }
-        sizes={sizes ? sizes : getNextImageSizes(resolution, autoSize)}
+        sizes={sizes ? sizes : getNextImageSizes(resolution, autoResolution)}
         placeholder="blur"
         blurDataURL={sanityImageAsset.metadata.lqip}
         priority={priority}
@@ -161,73 +142,23 @@ export default function SizedImage({
     );
   }
 
-  if (notNextImage) {
-    return (
-      <img
-        className={`bmb-image ${className}`}
-        src={src ? src : ""}
-        id={id ? id : undefined}
-        alt={alt ? alt : ""}
-        style={
-          style
-            ? { objectFit: objectFit ? objectFit : undefined, ...style }
-            : undefined
-        }
-        width={
-          !fill
-            ? width
-              ? width
-              : height
-                ? height * intrinsicImgSize.aspectRatio
-                : 500
-            : undefined
-        }
-        height={
-          !fill
-            ? height
-              ? height
-              : width
-                ? width / intrinsicImgSize.aspectRatio
-                : 500
-            : undefined
-        }
-        loading={priority ? "eager" : "lazy"}
-      />
-    );
-  }
-
   return (
-    <NextImage
-      className={`bmb-image ${className}`}
-      id={id ? id : undefined}
-      src={src ? src : ""}
-      alt={alt ? alt : ""}
-      width={
-        !fill
-          ? width
-            ? width
-            : height
-              ? height * intrinsicImgSize.aspectRatio
-              : 500
-          : undefined
-      }
-      height={
-        !fill
-          ? height
-            ? height
-            : width
-              ? width / intrinsicImgSize.aspectRatio
-              : 500
-          : undefined
-      }
-      style={
-        style
-          ? { objectFit: objectFit ? objectFit : undefined, ...style }
-          : undefined
-      }
+    <SizedPlainImage
+      src={src}
+      alt={alt}
+      style={style}
+      objectFit={objectFit}
       fill={fill}
+      className={className}
+      id={id}
+      resolution={resolution}
+      sizes={sizes}
+      autoResolution={autoResolution}
       priority={priority}
-      sizes={sizes ? sizes : getNextImageSizes(resolution, autoSize)}
+      notNextImage={notNextImage}
+      sanityImageAsset={sanityImageAsset}
+      width={width}
+      height={height}
     />
   );
 }

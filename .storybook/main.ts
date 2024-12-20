@@ -11,5 +11,6 @@ const config: StorybookConfig = {
     "@storybook/addon-interactions",
   ],
   framework: '@storybook/nextjs', 
+  staticDirs: ['../public'],
 };
 export default config;

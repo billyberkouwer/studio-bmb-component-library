@@ -23,11 +23,9 @@ export const InternalLink: Story = {
   args: {
     children: "Internal Link",
     size: "medium",
-
     link: {
       "href": "#"
     },
-
     externalLink: null
   }
 };
@@ -37,6 +35,8 @@ export const ExternalLink: Story = {
     children: "External Link",
     size: "medium",
     link: null,
-    externalLink: {}
+    externalLink: {
+      "href": ""
+    }
   }
 };

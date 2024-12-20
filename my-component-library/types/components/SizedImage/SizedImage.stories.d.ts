@@ -5,5 +5,6 @@ declare const meta: {
 };
 export default meta;
 type Story = StoryObj<typeof meta>;
-export declare const Default: Story;
+export declare const PlainNextImage: Story;
+export declare const NotNextImage: Story;
 export declare const SanityImage: Story;

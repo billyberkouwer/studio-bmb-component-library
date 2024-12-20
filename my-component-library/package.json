@@ -1,6 +1,6 @@
 {
   "name": "studio-bmb-component-library",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "index.js",
   "homepage": "https://github.com/billyberkouwer/studio-bmb-components",
   "scripts": {
@@ -18,10 +18,10 @@
   "description": "A component library developed by Billy Myles-Berkouwer for use in Next.js projects, with the aim of building reusable components used frequently by Studio BMB in development projects.",
   "peerDependencies": {
     "next": "^15.1.1",
+    "next-sanity": "^9.8.28",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "video.js": "^8.21.0",
-    "next-sanity": "^9.8.28",
-    "sanity": "^3.68.1"
+    "sanity": "^3.68.1",
+    "video.js": "^8.21.0"
   }
 }

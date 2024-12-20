@@ -1,11 +1,11 @@
 {
-  "name": "studio-bmb-component-library",
+  "name": "studio-bmb-component-library-dev",
   "version": "0.1.0",
   "private": true,
-  "main": "dist/",
-  "types": "dist/index.d.ts",
+  "main": "my-component-library/",
+  "types": "my-component-library/index.d.ts",
   "files": [
-    "dist"
+    "my-component-library"
   ],
   "scripts": {
     "dev": "next dev --turbopack",
